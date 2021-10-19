@@ -1,0 +1,97 @@
+---
+title: "Lab 1: Intro to R"
+author: "Leticia Salazar"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+```
+
+### Exercise 1
+
+Counts of girls baptized:
+
+```{r view-girls-counts}
+arbuthnot$girls
+```
+
+
+### Exercise 2
+
+There is a peak around 1660 with the number of girls being baptized increases with a slight decrease after the 1700s. Overall, it's an upward trend in girls being baptized.
+
+```{r trend-girls}
+ggplot(data = arbuthnot, aes(x = year, y = girls)) + 
+  geom_line()
+
+ggplot(data = arbuthnot, aes(x = year, y = girls)) +
+  geom_point()
+```
+
+### Exercise 3
+
+The boys born over time are slightly above 50% up until early 1700s where there's a sudden drop. Overall, the birth of boys has significantly increased.
+
+```{r plot-prop-boys-arbuthnot}
+arbuthnot <- arbuthnot %>%
+  mutate(total = boys + girls)
+
+ggplot(data = arbuthnot, aes(x = year, y = boys/total)) + 
+  geom_line()
+```
+
+
+### Exercise 4
+
+The years included in this data set are from 1940 to 2002. The dimensions of the data set are 63, 3 and the column names are "year", "boys", "girls".
+
+```{r dim-present}
+data(present)
+
+dim(present)
+
+range(present$year)
+
+names(present)
+```
+
+
+### Exercise 5
+
+Comparing the arbuthnot's and present data set they are completely different. The median for arbuthnot's data set is 11813 where as the one for present is 3756547.
+
+```{r count-compare}
+summary(arbuthnot)
+
+summary(present)
+```
+
+
+### Exercise 6
+
+Looking at the graph, there is a decrease in boys being born in the US compared to Arbuthnot's observation. You can see that between 1940 and 1945 there's still a peak but after 1950's there's a decline. From 1965 to 1980 there's a slight increase with a huge drop afterwards.
+
+```{r plot-prop-boys-present}
+present <- present %>%
+  mutate(total = boys + girls)
+
+ggplot(data = present, aes(x = year, y = boys/total)) + 
+  geom_line()
+```
+
+
+### Exercise 7
+
+Based on this data, the most number of births in the US was in 1961.
+
+```{r find-max-total}
+present %>%
+  mutate(total = boys + girls) %>%
+  arrange(desc(total))
+```
+
