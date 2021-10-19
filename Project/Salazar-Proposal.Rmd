@@ -1,13 +1,29 @@
 ---
 title: DATA 606 Data Project Proposal
-author: 
+author: "Leticia Salazar"
+date: "`r Sys.Date()`"
+output: 
+ html_document:
+    theme: cosmo
 ---
 
 ### Data Preparation
 
+```{r}
+# load packages / libraries
+library("dplyr")
+library("tidyverse")
+```
+
+
 ```{r setup, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
 # load data
+drinks <- read.csv("https://raw.githubusercontent.com/letisalba/Data-606/main/Project/drinks.csv", header = TRUE, na.strings = c(""," ", "NA"));
+drinks
+```
 
+```{r}
+glimpse(drinks)
 ```
 
 
@@ -15,49 +31,93 @@ author:
 
 **You should phrase your research question in a way that matches up with the scope of inference your dataset allows for.**
 
-
+_What country has the highest alcohol consumption?_
 
 ### Cases 
 
 **What are the cases, and how many are there?**
 
-
+_Each case represents a country around the world along with their beer, spirits and/or wine number of servings, as well as the total liters of pure alcohol. There are 193 total observations in this data set._
 
 ### Data collection 
 
 **Describe the method of data collection.**
 
-
+_The data was collected from [FiveThirtyEight's](https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/) article called "Dear Mona Followup: Where Do People Drink The Most Beer, Wine And Spirits?" This data was collected by World Health Organisation, Global Information System on Alcohol and Health (GISAH), 2010._
 
 ### Type of study 
 
 **What type of study is this (observational/experiment)?**
 
-
+_This is an observational study._
 
 ### Data Source 
 
 **If you collected the data, state self-collected. If not, provide a citation/link.**
 
-
+_World Health Organization. (n.d.). Global information system on alcohol and health. World Health Organization. Retrieved October 19, 2021, from https://www.who.int/data/gho/data/themes/global-information-system-on-alcohol-and-health. _
 
 
 ### Dependent Variable
 
 **What is the response variable? Is it quantitative or qualitative?**
 
-
+_The dependent variable is alcohol consumption and it it quantitative._
 
 ### Independent Variable
 
 **You should have two independent variables, one quantitative and one qualitative.**
 
-
+_The independent variable is country and it is a qualitative._
 
 ### Relevant summary statistics 
 
 **Provide summary statistics for each the variables. Also include appropriate visualizations related to your research question (e.g. scatter plot, boxplots, etc). This step requires the use of R, hence a code chunk is provided below. Insert more code chunks as needed.**
 
 ```{r}
-
+summary(drinks$country)
 ```
+
+```{r}
+summary(drinks$beer_servings)
+```
+
+```{r}
+drinks %>% 
+ggplot(aes(x = beer_servings)) +
+  geom_histogram()
+```
+
+
+```{r}
+summary(drinks$spirit_servings)
+```
+
+```{r}
+drinks %>% 
+ggplot(aes(x = spirit_servings)) +
+  geom_histogram()
+```
+
+
+```{r}
+summary(drinks$wine_servings)
+```
+
+```{r}
+drinks %>% 
+ggplot(aes(x = wine_servings)) +
+  geom_histogram()
+```
+
+
+```{r}
+summary(drinks$total_litres_of_pure_alcohol)
+```
+
+```{r}
+drinks %>% 
+ggplot(aes(x = total_litres_of_pure_alcohol)) +
+  geom_histogram()
+```
+
