@@ -12,7 +12,50 @@ knitr::opts_chunk$set(echo = TRUE)
 
 **Working backwards, Part II.** (5.24, p. 203) A 90% confidence interval for a population mean is (65, 77). The population distribution is approximately normal and the population standard deviation is unknown. This confidence interval is based on a simple random sample of 25 observations. Calculate the sample mean, the margin of error, and the sample standard deviation.
 
+**Sample Mean is 71**
 
+```{r}
+# sample mean
+n <- 25
+x1 <- 65
+x2 <- 77
+
+smean <- (x2 + x1) / 2
+smean
+```
+
+
+**Margin of Error is 6**
+
+```{r}
+# margin of error
+n <- 25
+x1 <- 65
+x2 <- 77
+
+me <- (x2 - x1) / 2
+me
+```
+
+
+**Sample Standard Deviation is 17.54**
+
+```{r}
+# degrees of freedom
+df <- 25 -1
+df
+
+# T-value
+t <-  1.71
+
+# standard error
+se <- (77 - 71) / 1.71
+se
+
+#sample standard deviation
+sample_sd <- se * sqrt(n)
+sample_sd
+```
 
 
 
@@ -23,10 +66,38 @@ knitr::opts_chunk$set(echo = TRUE)
 **SAT scores.** (7.14, p. 261) SAT scores of students at an Ivy League college are distributed with a standard deviation of 250 points. Two statistics students, Raina and Luke, want to estimate the average SAT score of students at this college as part of a class project. They want their margin of error to be no more than 25 points.
 
 (a) Raina wants to use a 90% confidence interval. How large a sample should she collect?
+
+**Raina should collect a sample of at least 272 to use a 90% confidence interval.**
+
+```{r}
+sd <- 250
+me <- 25
+z_90 <- 1.65
+
+# sample size
+n <- ((sd * z_90) / me)^2
+n
+```
+
+
 (b) Luke wants to use a 99% confidence interval. Without calculating the actual sample size, determine whether his sample should be larger or smaller than Raina's, and explain your reasoning.
+
+**Luke's sample size should be larger than Raina's sample size at a 99% confidence interval. Since the confidence interval is narrower he needs to collect a larger sample to represent the population. **
+
+
 (c) Calculate the minimum required sample size for Luke.
 
+**Luke's required sample size is at least 666**
 
+```{r}
+sd <- 250
+me <- 25
+z_99 <- 2.58
+
+# sample size
+n <- ((sd * z_99) / me)^2
+n
+```
 
 
 
@@ -58,14 +129,57 @@ histPlot(hsb2$read - hsb2$write, col = COL[1],
 ```
 
 (a) Is there a clear difference in the average reading and writing scores?
+
+**There seems to be a bit of a difference within the box plots. The mean for both box plots seems to be a bit off from each other. In the histogram, the distribution appears to be normal.**
+
 (b) Are the reading and writing scores of each student independent of each other?
+
+**Being that it is a random sample of 200 students, it is reasonable to assume that reading and writing score of each student is independent of each other.**
+
 (c) Create hypotheses appropriate for the following research question: is there an evident difference in the average scores of students in the reading and writing exam?
+
+**Ho: There is no difference in the reading and writing scores **
+
+**Ha: There is a difference in the reading and writing scores**
+
 (d) Check the conditions required to complete this test.
+
+**The sample is random with a size of 200 which is 10% of the population. The reading and writing scores appear to be independent from each other and the distribution also appears to be normal.**
+
 (e) The average observed difference in scores is ${ \widehat { x }  }_{ read-write }=-0.545$, and the standard deviation of the differences is 8.887 points. Do these data provide convincing evidence of a difference between the average scores on the two exams?
+
+**P-value is 0.19 and not less than 0.05, therefore we can reject the alternative hypothesis. There is no difference in the reading and writing scores.**
+
+```{r}
+diff_sd <- 8.887
+diff_mu <- -0.545
+n <- 200
+
+# standard error
+diff_se <- diff_sd / sqrt(n)
+diff_se
+
+# T-Value
+t_value <- (diff_mu - 0) / diff_se
+t_value
+
+# degrees of freedom
+df <- n - 1
+
+#P-value
+p_value <-  pt(t_value, df, lower.tail = TRUE)
+p_value
+```
+
+
 (f) What type of error might we have made? Explain what the error means in the context of the application.
+
+**We would have made a Type II Error, incorrectly rejecting the alternative hypothesis. This would mean there is a difference in the average scores for reading and writing and we failed to identify it.**
+
+
 (g) Based on the results of this hypothesis test, would you expect a confidence interval for the average difference between the reading and writing scores to include 0? Explain your reasoning.
 
-
+**Yes I would expect a confidence interval for the average difference between reading and writing scores to include 0 because it would indicate that the difference is not on either side.**
 
 --------------------------------------------------------------------------------
 
@@ -103,7 +217,40 @@ axis(1, at = c(1,2), labels = c("automatic","manual"))
 axis(2, at = c(15,25,35))
 ```
 
+**Ho: There is no difference in average miles between manual and automatic cars.**
 
+**Ha: There is a difference in average miles between manual and automatic cars.**
+
+**The P-value is 0.011, being less than 0.05, therefore we can reject the null hypothesis**
+
+```{r}
+n <- 26
+
+# Automatic
+mean_auto <- 22.92
+sd_auto <- 5.29
+
+# Manual
+mean_man <- 27.88
+sd_man <- 5.01
+
+# difference in sample means
+mean_diff <- mean_auto - mean_man
+mean_diff
+
+# standard deviation 
+se_diff <- ((sd_auto^2 / n) + (sd_man^2 / n))
+se_diff
+
+# T-Value
+t_value <- (mean_diff - 0) / se_diff
+
+df <- n - 1
+
+# P-Value
+p_value <- pt(t_value, df, lower.tail = TRUE)
+p_value
+```
 
 
 
@@ -114,8 +261,17 @@ axis(2, at = c(15,25,35))
 
 **Email outreach efforts.** (7.34, p. 284) A medical research group is recruiting people to complete short surveys about their medical history. For example, one survey asks for information on a person's family history in regards to cancer. Another survey asks about what topics were discussed during the person's last visit to a hospital. So far, as people sign up, they complete an average of just 4 surveys, and the standard deviation of the number of surveys is about 2.2. The research group wants to try a new interface that they think will encourage new enrollees to complete more surveys, where they will randomize each enrollee to either get the new interface or the current interface. How many new enrollees do they need for each interface to detect an effect size of 0.5 surveys per enrollee, if the desired power level is 80%?
 
+**There need to be at least 32 enrollee's each to detect an effect size of 0.5 surverys per enrolle at a 80% confidence interval.**
 
+```{r}
+z_80 <- 1.28
+sd <- 2.2
+me <- 0.5
 
+# sample size
+n_4 <- ((sd * z_80) / me)^2
+n_4
+```
 
 
 
@@ -157,8 +313,20 @@ boxPlot(gss_sub$hrs1, fact = gss_sub$degree,
 ```
 
 (a) Write hypotheses for evaluating whether the average number of hours worked varies across the five groups.
+
+**Ho: There is no difference in the mean number of hours worked across the population.**
+
+**Ha: There is a difference in the mean number of hours worked across the population**
+
+
 (b) Check conditions and describe any assumptions you must make to proceed with the test.
+
+**Based on the text the observations appear to be independent across the groups. The data within each group is nearly normal and by looking at the standard deviation there variability within the groups is almost equal.**
+
+
 (c) Below is part of the output associated with this test. Fill in the empty cells.
+
+**[ANOVA](https://statpages.info/anova1sm.html)**
 
 \begin{center}
 \renewcommand{\arraystretch}{1.25}
@@ -170,25 +338,27 @@ boxPlot(gss_sub$hrs1, fact = gss_sub$degree,
                                     & F-value      
                                             & Pr($>$F) \\ 
   \hline
-degree      & \fbox{\textcolor{white}{{\footnotesize XXXXX}}}       
-                    & \fbox{\textcolor{white}{{\footnotesize XXXXX}}}       
+degree      & 4       
+                    & 2004.1 
                             & 501.54    
-                                    & \fbox{\textcolor{white}{{\footnotesize XXXXX}}}   
+                                    & 2.19    
                                             & 0.0682 \\ 
-Residuals   & \fbox{\textcolor{white}{{\footnotesize XXXXX}}} 
+Residuals   & 1167
                     & 267,382     
-                            & \fbox{\textcolor{white}{{\footnotesize  XXXXX}}}          
-                                    &       
+                            & 229.11           
+                                    &     
                                             &  \\ 
    \hline
-Total       & \fbox{\textcolor{white}{{\footnotesize XXXXX}}} 
-                    &\fbox{\textcolor{white}{{\footnotesize XXXXX}}}
+Total       & 1171 
+                    & 269,377.73 
 \end{tabular}
 \end{center}
 
+
+
 (d) What is the conclusion of the test?
 
-
+**Being that the p-value is 0.0684 it is higher than 0.05 and we reject our alternative hypothesis.**
 
 
 

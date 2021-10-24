@@ -11,8 +11,26 @@ output:
 
 ```{r}
 # load packages / libraries
+
+#These packages are necessary for maps
+#install.packages("cowplot")
+#install.packages("googleway")
+#install.packages("ggplot2")
+#install.packages("ggrepel")
+#install.packages("ggspatial")
+#install.packages("libwgeom")
+#install.packages("sf")
+#install.packages("rnautralearth")
+#install.packages("rnautralearthdata")
+
 library("dplyr")
 library("tidyverse")
+
+#These libraries are for maps
+library("ggplot2")
+theme_set(theme_bw())
+library("sf")
+
 ```
 
 
