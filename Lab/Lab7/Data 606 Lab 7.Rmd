@@ -31,6 +31,7 @@ Let's load the packages.
 library(tidyverse)
 library(openintro)
 library(infer)
+library(DATA606)
 ```
 
 
@@ -264,7 +265,7 @@ lower_active
 
 ```{r}
 height_table <- as.data.frame(table(yrbss$height))
-height_freq <- sum(table_height$Freq)
+height_freq <- sum(height_table$Freq)
 
 # mean, standard deviation and sample size
 height_mean <- mean(yrbss$height, na.rm = TRUE)
