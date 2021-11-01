@@ -1,55 +1,53 @@
 ---
-title: DATA 606 Data Project Proposal
+title: "DATA 606 Data Project Proposal"
 author: "Leticia Salazar"
-date: "`r Sys.Date()`"
-output: 
- html_document:
-    theme: cosmo
+output:
+  pdf_document:
+    toc: yes
+  html_document:
+    theme: yeti
+    highlight: tango
+    toc: yes
+    toc_float: yes
 ---
+$~$
 
 ### Data Preparation
-
 ```{r}
 # load packages / libraries
-
-#These packages are necessary for maps
-#install.packages("cowplot")
-#install.packages("googleway")
-#install.packages("ggplot2")
-#install.packages("ggrepel")
-#install.packages("ggspatial")
-#install.packages("libwgeom")
-#install.packages("sf")
-#install.packages("rnautralearth")
-#install.packages("rnautralearthdata")
-
-library("dplyr")
 library("tidyverse")
-
-#These libraries are for maps
-library("ggplot2")
-theme_set(theme_bw())
-library("sf")
-
+library("tidyr")
+library("dplyr")
 ```
-
+$~$
 
 ```{r setup, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
 # load data
 drinks <- read.csv("https://raw.githubusercontent.com/letisalba/Data-606/main/Project/drinks.csv", header = TRUE, na.strings = c(""," ", "NA"));
-drinks
 ```
-
+$~$
 ```{r}
 glimpse(drinks)
 ```
-
+$~$
+```{r}
+# Get column names
+names(drinks)
+```
+$~$
+```{r}
+# Rename columns
+colnames(drinks) <- c("Country", "Beer_Servings", "Spirit_Servings", "Wine_Servings", "Total_Litres_Pure_Alcohol")
+```
+$~$
 
 ### Research question 
 
-**You should phrase your research question in a way that matches up with the scope of inference your dataset allows for.**
+**You should phrase your research question in a way that matches up with the scope of inference your data  set allows for.**
 
 _What country has the highest alcohol consumption?_
+
+$~$
 
 ### Cases 
 
@@ -57,11 +55,15 @@ _What country has the highest alcohol consumption?_
 
 _Each case represents a country around the world along with their beer, spirits and/or wine number of servings, as well as the total liters of pure alcohol. There are 193 total observations in this data set._
 
+$~$
+
 ### Data collection 
 
 **Describe the method of data collection.**
 
 _The data was collected from [FiveThirtyEight's](https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/) article called "Dear Mona Followup: Where Do People Drink The Most Beer, Wine And Spirits?" This data was collected by World Health Organisation, Global Information System on Alcohol and Health (GISAH), 2010._
+
+$~$
 
 ### Type of study 
 
@@ -69,12 +71,15 @@ _The data was collected from [FiveThirtyEight's](https://fivethirtyeight.com/fea
 
 _This is an observational study._
 
+$~$
+
 ### Data Source 
 
 **If you collected the data, state self-collected. If not, provide a citation/link.**
 
 _World Health Organization. (n.d.). Global information system on alcohol and health. World Health Organization. Retrieved October 19, 2021, from https://www.who.int/data/gho/data/themes/global-information-system-on-alcohol-and-health. _
 
+$~$
 
 ### Dependent Variable
 
@@ -82,60 +87,67 @@ _World Health Organization. (n.d.). Global information system on alcohol and hea
 
 _The dependent variable is alcohol consumption and it it quantitative._
 
+$~$
+
 ### Independent Variable
 
-**You should have two independent variables, one quantitative and one qualitative.**
+**What is the independent variable? Is it quantitative or qualitative?**
 
 _The independent variable is country and it is a qualitative._
+
+$~$
 
 ### Relevant summary statistics 
 
 **Provide summary statistics for each the variables. Also include appropriate visualizations related to your research question (e.g. scatter plot, boxplots, etc). This step requires the use of R, hence a code chunk is provided below. Insert more code chunks as needed.**
 
 ```{r}
-summary(drinks$country)
+summary(drinks$Country)
 ```
 
+
+
+$~$
 ```{r}
-summary(drinks$beer_servings)
+summary(drinks$Beer_Servings)
 ```
-
+$~$
 ```{r}
 drinks %>% 
-ggplot(aes(x = beer_servings)) +
+ggplot(aes(x = Beer_Servings)) +
   geom_histogram()
 ```
-
+$~$
 
 ```{r}
-summary(drinks$spirit_servings)
+summary(drinks$Spirit_Servings)
 ```
-
+$~$
 ```{r}
 drinks %>% 
-ggplot(aes(x = spirit_servings)) +
+ggplot(aes(x = Spirit_Servings)) +
   geom_histogram()
 ```
-
+$~$
 
 ```{r}
-summary(drinks$wine_servings)
+summary(drinks$Wine_Servings)
 ```
-
+$~$
 ```{r}
 drinks %>% 
-ggplot(aes(x = wine_servings)) +
+ggplot(aes(x = Wine_Servings)) +
   geom_histogram()
 ```
-
+$~$
 
 ```{r}
-summary(drinks$total_litres_of_pure_alcohol)
+summary(drinks$Total_Litres_Pure_Alcohol)
 ```
-
+$~$
 ```{r}
 drinks %>% 
-ggplot(aes(x = total_litres_of_pure_alcohol)) +
+ggplot(aes(x = Total_Litres_Pure_Alcohol)) +
   geom_histogram()
 ```
 
