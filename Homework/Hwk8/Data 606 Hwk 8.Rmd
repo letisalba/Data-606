@@ -53,11 +53,21 @@ axis(2)
 ```
 
 (a) Describe the relationship between number of calories and amount of carbohydrates (in grams) that Starbucks food menu items contain.
+
+**Based on the graph, there's an upward positive trend, as the amount of calories increase so do the carbs.**
+
 (b) In this scenario, what are the explanatory and response variables?
+
+**Explanatory Variable: in this scenario, the calories is the explanatory variable**
+**Response Variable: the carbs would be the response variable in this scenario**
+
 (c) Why might we want to fit a regression line to these data?
+
+**We would want to fit a regression line in order to make better predictions about the data. By doing so in this data set we'd be able to predict the amount of carbs based on the calories.**
+
 (d) Do these data meet the conditions required for fitting a least squares line?
 
-
+**Based on the plot, the data fits a linear plot, the residuals appear to be normal and we cannot achieve constant variability. We cannot be sure if the variables are independent since this is from the Starbucks menu. Therefore, it does not satisfy the conditions required for a fitting a least squares line.**
 
 
 
@@ -83,9 +93,12 @@ plot(bdims$hgt ~ bdims$sho_gi,
 \end{center}
 
 (a) Describe the relationship between shoulder girth and height.
+
+**Based on the plot, it seems to have a positive upward trend where as the shoulder girth increases so does the height.**
+
 (b) How would the relationship change if shoulder girth was measured in inches while the units of height remained in centimeters?
 
-
+**The relationship wouldn't change if the units changed to inches for shoulder girth. It will still show a positive upward trend.**
 
 
 --------------------------------------------------------------------------------
@@ -95,13 +108,75 @@ plot(bdims$hgt ~ bdims$sho_gi,
 **Body measurements, Part III.** (8.24, p. 326) Exercise above introduces data on shoulder girth and height of a group of individuals. The mean shoulder girth is 107.20 cm with a standard deviation of 10.37 cm. The mean height is 171.14 cm with a standard deviation of 9.41 cm. The correlation between height and shoulder girth is 0.67.
 
 (a) Write the equation of the regression line for predicting height.
+
+**The equation of regression line for predicting height is: y = β0 + β1*x or height = 105.97 + 0.608 * girth.**
+
+
 (b) Interpret the slope and the intercept in this context.
+
+**The slope is .608, which is the rate of increase for the height in centimeters and the intercept is 105.97 is the height in centimeters of the shoulder girth.**
+
+```{r}
+# Shoulder girth mean and standard deviation
+sg_mean <- 107.20
+sg_sd <- 10.37
+
+# Height mean and standard deviation
+h_mean <- 171.14
+h_sd <- 9.41
+
+# Correlation between height and shoulder girth
+corr <- 0.67
+
+# Calculate slope
+b1 <- (h_sd / sg_sd) * corr
+b1
+
+# Calculate Intercept
+b0 <- h_mean - (b1 * sg_mean)
+b0
+```
+
 (c) Calculate $R^2$ of the regression line for predicting height from shoulder girth, and interpret it in the context of the application.
+
+**The $R^2$ is 45% meaning that 45% of the variation is found within this data.**
+
+```{r}
+# $R^2$
+r_sqr <- corr^2
+r_sqr
+```
+
+
 (d) A randomly selected student from your class has a shoulder girth of 100 cm. Predict the height of this student using the model.
+
+**The predicted height of the student is 166.76 cm. **
+
+```{r}
+# shoulder girth
+g <- 100
+
+# Predict height
+predict_height <- b0 + b1 * g
+predict_height
+```
+
+
 (e) The student from part (d) is 160 cm tall. Calculate the residual, and explain what this residual means.
+
+**The residual is -6.76 meaning that the model overestimated the height of the student.**
+
+```{r}
+# Calculate the residual
+act_height <- 160
+residual <- act_height - predict_height
+residual
+```
+
+
 (f) A one year old has a shoulder girth of 56 cm. Would it be appropriate to use this linear model to predict the height of this child?
 
-
+**Being that a one year old's shoulder girth is 56 cm, it is otuside of the range in the sample data.**
 
 
 
@@ -152,11 +227,32 @@ box()
 \end{center}
 
 (a) Write out the linear model.
+
+**y = β0 + β1*x or heart weight(g) = -0.357 + 4.034 * body weight(kg) **
+
 (b) Interpret the intercept.
+
+**With 0kg being the body weight, the intercept is -0.357 of the heart weight. Since there is no such thing as a 0 kg body weight, this result is not meaningful.**
+
 (c) Interpret the slope.
+
+**For the slope, for every additional body weight(kg) there is an expected additional 4.034g increase in heart weight.**
+
 (d) Interpret $R^2$.
+
+**The body weight explains the 65% variability in the heart weight of the cats.**
+
 (e) Calculate the correlation coefficient.
 
+**The correlation coefficient is 0.804 and being that it is greater than 0.5 there is a positive correlation.**
+
+```{r}
+R2 <-  0.6466
+
+# Correlation Coefficient
+cc <- sqrt(R2)
+cc
+```
 
 
 --------------------------------------------------------------------------------
@@ -201,8 +297,28 @@ box()
 \end{center}
 
 (a) Given that the average standardized beauty score is -0.0883 and average teaching evaluation score is 3.9983, calculate the slope. Alternatively, the slope may be computed using just the information provided in the model summary table.
+
+**The slope is -0.13**
+
+```{r}
+# y = b0 + b1*x
+b0 <- 4.010
+y <- 3.9983
+x <- 0.0883
+
+# Slope
+b1 <- (y - b0) / x
+b1
+```
+
+
 (b) Do these data provide convincing evidence that the slope of the relationship between teaching evaluation and beauty is positive? Explain your reasoning.
+
+**The slope found is positive because the p-value is almost 0.**
+
 (c) List the conditions required for linear regression and check if each one is satisfied for this model based on the following diagnostic plots.
+
+**Based on the plots below, the conditions for linear regression are met. The data is almost linear, it's a random observation and assumes that the points are independent from each other and the distribution appears to be normal.**
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.show="hold", out.width="50%", fig.height=4}
 # residuals plot ----------------------------------------------------
