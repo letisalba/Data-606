@@ -109,7 +109,7 @@ plot(bdims$hgt ~ bdims$sho_gi,
 
 (a) Write the equation of the regression line for predicting height.
 
-**The equation of regression line for predicting height is: y = β0 + β1*x or height = 105.97 + 0.608 * girth.**
+**The equation of regression line for predicting height is: y = b0 + b1*x or height = 105.97 + 0.608 * girth.**
 
 
 (b) Interpret the slope and the intercept in this context.
@@ -228,7 +228,7 @@ box()
 
 (a) Write out the linear model.
 
-**y = β0 + β1*x or heart weight(g) = -0.357 + 4.034 * body weight(kg) **
+**y = b0 + b1*x or heart weight(g) = -0.357 + 4.034 * body weight(kg) **
 
 (b) Interpret the intercept.
 
