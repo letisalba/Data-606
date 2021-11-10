@@ -46,7 +46,7 @@ $~$
 
 **You should phrase your research question in a way that matches up with the scope of inference your data set allows for.**
 
-_What country has the highest alcohol consumption?_
+_Do countries with the highest alcohol consumption have a preference in what alcohol they consume: beer, spirits or wine?_
 
 $~$
 
@@ -112,7 +112,60 @@ $~$
 ```{r}
 summary(drinks$Beer_Servings)
 ```
+
 $~$
+
+```{r}
+# Beer servings by Country
+drinks %>% 
+  arrange(desc(Beer_Servings)) %>% 
+  head(40) %>% 
+  ggplot(aes(y = reorder(Country, Beer_Servings),
+             x = Beer_Servings,
+                  fill= Country))+
+  geom_col()+
+  theme(legend.position = "none")
+```
+$~$
+
+```{r}
+# Spirits serving by Country top 40
+drinks %>% 
+  arrange(desc(Spirit_Servings)) %>% 
+  head(40) %>% 
+  ggplot(aes(y = reorder(Country, Spirit_Servings),
+             x = Spirit_Servings,
+                  fill= Country))+
+  geom_col()+
+  theme(legend.position = "none")
+```
+
+$~$
+
+```{r}
+# Wine servings by Country top 40
+drinks %>% 
+  arrange(desc(Wine_Servings)) %>% 
+  head(40) %>% 
+  ggplot(aes(y = reorder(Country, Wine_Servings),
+             x = Wine_Servings,
+                  fill= Country))+
+  geom_col()+
+  theme(legend.position = "none")
+```
+
+
+```{r}
+# Total alcohol in litres by Country top 40
+drinks %>% 
+  arrange(desc(Total_Litres_Pure_Alcohol)) %>% 
+  head(40) %>% 
+  ggplot(aes(y = reorder(Country, Total_Litres_Pure_Alcohol),
+             x = Total_Litres_Pure_Alcohol,
+                  fill= Country))+
+  geom_col()+
+  theme(legend.position = "none")
+```
 
 
 $~$
