@@ -2,13 +2,24 @@
 title: "Chapter 9 - Multiple and Logistic Regression"
 author: "Leticia Salazar"
 output:
-    pdf_document:
-        extra_dependencies: ["geometry", "multicol", "multirow"]
+  html_document:
+    df_print: paged
+  pdf_document:
+    extra_dependencies:
+    - geometry
+    - multicol
+    - multirow
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+
+```{r}
+library("DATA606")
+```
+
 
 **Baby weights, Part I.** (9.1, p. 350) The Child Health and Development Studies investigate a range of topics. One study considered all pregnancies between 1960 and 1967 among women in the Kaiser Foundation Health Plan in the San Francisco East Bay area. Here, we study the relationship between smoking and weight of the baby. The variable *smoke* is coded 1 if the mother is a smoker, and 0 if not. The summary table below shows the results of a linear regression model for predicting the average birth weight of babies, measured in ounces, based on the smoking status of the mother.
 
@@ -29,11 +40,32 @@ to apply the model. (Note that we don't need to check linearity since the
 predictor has only two levels.)
 
 (a) Write the equation of the regression line.
+
+**Intercept = 123.05; slope=-8.94**
+
+**y = mx + b**
+
+**babyweight = 123.05−8.94(smoke)**
+
 (b) Interpret the slope in this context, and calculate the predicted birth 
 weight of babies born to smoker and non-smoker mothers.
+
+**The slope indicated the estimated weight of babies born to mothers who smoke vs. the mothers who don't smoke. For mothers who smoke the predicted birth weight of babies is 114.11 oz while for the non smoker mothers the predicted baby weight is 123.05 oz.**
+
+```{r}
+# smoker
+smoke_baby_wgt <-123.05-8.94*1
+smoke_baby_wgt
+
+# non-smoker
+non_smoke_baby_wgt <- 123.05-8.94*0
+non_smoke_baby_wgt
+```
+
+
 (c) Is there a statistically significant relationship between the average birth weight and smoking?
 
-
+**Being that the p-value is closer to 0 we can reject the null hypothesis where Ho: B1 is equal to 0 and Ha: B1 is not equal to 0. There is a negative correlation between the babies weight born from smoker or non-smoker mothers.**
 
 
 
@@ -57,7 +89,7 @@ $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\
 \end{tabular}
 \end{center}
 
-The summary table below shows the results of a linear regression model for predicting the average number of days absent based on ethnic background (`eth`: 0 - aboriginal, 1 - not aboriginal), sex (`sex`: 0 - female, 1 - male), and learner status (`lrn`: 0 - average learner, 1 - slow learner).
+The summary table below shows the results of a linear regression model for predicting the average number of days absent based on ethnic background (`eth`: 0 -aboriginal, 1 -not aboriginal), sex (`sex`: 0 -female, 1 -male), and learner status (`lrn`: 0 -average learner, 1 -slow learner).
 
 \begin{center}
 \begin{tabular}{rrrrr}
@@ -73,12 +105,57 @@ lrn         & 2.15      & 2.65        & 0.81      & 0.4177 \\
 \end{center}
 
 (a) Write the equation of the regression line.
+
+**y=18.93−9.11∗eth+3.10∗sex+2.15∗lrn**
+
 (b) Interpret each one of the slopes in this context.
+
+**eth: predicts the absenteeism for non-aboriginal students**
+
+**sex: predicts the average number of days absent by male students**
+
+**lrn: predicts the average number of days absent by slow learners.**
+
 (c) Calculate the residual for the first observation in the data set: a student who is aboriginal, male, a slow learner, and missed 2 days of school.
+
+**The residual for the first observation of the given student is negative 22.18.**
+
+```{r}
+eth <-0
+
+# male only
+sex <-1 
+lrn <-1 
+days_missed <-2
+prediction <-18.93-9.11*eth+3.1*sex+2.15*lrn
+
+# residuals
+first_observ <-days_missed-prediction 
+first_observ
+```
+
+
 (d) The variance of the residuals is 240.57, and the variance of the number of 
 absent days for all students in the data set is 264.17. Calculate the $R^2$ and 
 the adjusted $R^2$. Note that there are 146 observations in the data set.
 
+**The r-squared is 0.0893 and the adjusted r-squared is 0.0701.**
+
+```{r}
+# variance residual and outcome
+residual <-240.57
+outcome <-264.17
+n <- 146
+k <-3
+
+# $R^2$
+r_squ <-1-(residual / outcome)
+r_squ
+
+# adjusted $R^2$
+adju_r2 <-1-(residual / outcome)*((n-1)/(n-k-1))
+adju_r2
+```
 
 
 
@@ -106,7 +183,7 @@ the adjusted $R^2$. Note that there are 146 observations in the data set.
 
 Which, if any, variable should be removed from the model first?
 
-
+**We could eliminate the `no ethnicity` since it has a negative value.**
 
 
 
@@ -142,7 +219,12 @@ Undamaged         & 5  & 6 & 6 & 6 & 6 & 5 & 6 & 6 & 6 & 6 & 6 \\
 \end{center}
 
 (a) Each column of the table above represents a different shuttle mission. Examine these data and describe what you observe with respect to the relationship between temperatures and damaged O-rings.
+
+**Each column above represents a different shuttle mission with the data collected being an observation in respect to the temperature and damaged / undamaged O-rings. As the temperature increases the frequency of the damaged O-rings decreases.**
+
 (b) Failures have been coded as 1 for a damaged O-ring and 0 for an undamaged O-ring, and a logistic regression model was fit to these data. A summary of this model is given below. Describe the key components of this summary table in words.
+
+**With a p-value of 0 there's meaning to the relationship between the temperatures and damaged O-rings.**
 
 \begin{center}
 \begin{tabular}{rrrrr}
@@ -156,9 +238,12 @@ Temperature & -0.2162  & 0.0532     & -4.07     & 0.0000 \\
 \end{center}
 
 (c) Write out the logistic model using the point estimates of the model parameters.
+
+**log(p/(1-p)) = 11.6630-0.2162xTemperature**
+
 (d) Based on the model, do you think concerns regarding O-rings are justified? Explain.
 
-
+**Based on the model I do think the concerns about the O-rings are justified. The p-value justifies a strong correlation since it is of a low value.**
 
 
 
@@ -181,7 +266,7 @@ if(!file.exists('orings.rda')) {
 load("orings.rda")
 set.seed(17)
 # plot probability of damage vs. temperature ------------------------
-these <- orings[,1] %in% c(67, 70, 76)
+these <-orings[,1] %in% c(67, 70, 76)
 plot(orings[,1] + 
        c(rep(0, 5), c(-0.1, 0, 0.1), 0, 0, -0.07, -0.07, 0.07, 0.07, 
          rep(0, 4), -0.07, 0.07, 0, 0, 0), 
@@ -191,15 +276,15 @@ plot(orings[,1] +
      col = COL[1,2], pch = 19)
 mtext("Temperature (Fahrenheit)", 1, 2)
 # probability calculations ------------------------------------------
-temperature <- c(51, 53, 55)
-logitp <- 11.6630 - 0.2162 * temperature
-p <- exp(logitp) / (1+exp(logitp))
+temperature <-c(51, 53, 55)
+logitp <-11.6630 -0.2162 * temperature
+p <-exp(logitp) / (1+exp(logitp))
 ```
 \end{center}
 
 (a) The data provided in the previous exercise are shown in the plot. The logistic model fit to these data may be written as
 \begin{align*}
-\log\left( \frac{\hat{p}}{1 - \hat{p}} \right) = 11.6630 - 0.2162\times Temperature
+\log\left( \frac{\hat{p}}{1-\hat{p}} \right) = 11.6630-0.2162\times Temperature
 \end{align*}
 
 where $\hat{p}$ is the model-estimated probability that an O-ring will become damaged. Use the model to calculate the probability that an O-ring will become damaged at each of the following ambient temperatures: 51, 53, and 55 degrees Fahrenheit. The model-estimated probabilities for several additional ambient temperatures are provided below, where subscripts indicate the temperature:
@@ -215,9 +300,39 @@ where $\hat{p}$ is the model-estimated probability that an O-ring will become da
 	&& \hat{p}_{71} = 0.024
 \end{align*}
 
+
+**The probability of O-ring damage at 51 degrees Fahrenheit is 69.43%, at 53 degrees Fahrenheit is 59.75% and at 55 degrees Fahrenheit is 49.25%.**
+
+```{r}
+# temperature 51
+
+p_51 <-exp(11.663-51*.2126) / (1 + exp(11.663-51*.2126)) 
+p_51
+
+# temperature 53
+p_53 <-exp(11.663-53*.2126) / (1 + exp(11.663-53*.2126)) 
+p_53
+
+# temperature 55
+p_55 <-exp(11.663-55*.2126) / (1 + exp(11.663-55*.2126)) 
+p_55
+
+```
+
+
 (b) Add the model-estimated probabilities from part~(a) on the plot, then connect these dots using a smooth curve to represent the model-estimated probabilities.
+
+**Plot**
+
+```{r}
+temp2 <-c(seq(51, 71, 2))
+prob <-exp(11.6630-0.2162*temp2) / (1 + exp(11.6630-0.2162*temp2))
+plot(data.frame(temp2, prob), type = "b", pch = 15)
+```
+
+
 (c) Describe any concerns you may have regarding applying logistic regression in this application, and note any assumptions that are required to accept the model's validity.
 
-
+**Some of my assumptions are that the observations appear to be independent from each other but we'd have to consider all the variables more than 23 missions.**
 
 

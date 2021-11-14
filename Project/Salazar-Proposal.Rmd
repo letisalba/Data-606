@@ -46,7 +46,7 @@ $~$
 
 **You should phrase your research question in a way that matches up with the scope of inference your data set allows for.**
 
-_Do countries with the highest alcohol consumption have a preference in what alcohol they consume: beer, spirits or wine?_
+_Is there a significant difference in the preferred type of alcohol?_
 
 $~$
 
@@ -94,7 +94,7 @@ $~$
 
 **What is the independent variable? Is it quantitative or qualitative?**
 
-_The independent variable is country and it is a qualitative._
+_The independent variables are country and types of alcohol and they are qualitative._
 
 $~$
 
