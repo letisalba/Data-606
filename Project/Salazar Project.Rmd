@@ -1,33 +1,342 @@
 ---
-title: DATA 606 Data Project Proposal
-author: 
+title: DATA 606 Final Project
+author: Leticia Salazar
+output:
+  html_document:
+    theme: flatly
+    heightlight: breezedark
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
 ---
+$~$
 
+## Introduction
+
+Historically social drinking or moderate alcohol consumption holds an important role in social engagement for many.  According to WHO, World Health Organization, the recorded alcohol consumption per capita (year 15+) in the United States is 47% beer, 18% wine and 35% spirits. 
+
+This raised a question, in general, is there a significant difference in the preferred type of alcohol?
+
+$~$
+
+### Method of data collection
+In order to answer my question I collected data from [FiveThirtyEight's](https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/) article called "Dear Mona Followup: Where Do People Drink The Most Beer, Wine And Spirits?" This data was collected by World Health Organization, Global Information System on Alcohol and Health (GISAH), 2010.
+
+$~$
+
+### Cases 
+
+Each case represents a country around the world along with their beer, spirits and/or wine number of servings, as well as the total liters of pure alcohol. There are 193 total observations in this data set.
+
+$~$
+
+### Type of study 
+
+This is an observational study.
+
+$~$
+
+### Dependent Variable
+
+The dependent variable is alcohol consumption and it it quantitative.
+
+$~$
+
+### Independent Variable
+
+The independent variables are country and types of alcohol and they are qualitative.
+
+$~$
+
+## Data
+
+$~$
+
+```{r}
+# load libraries
+library(DATA606)
+library("tidyverse")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+```
+
+$~$
 
 ```{r echo=FALSE}
 # load data
 
+drinks <- read.csv("https://raw.githubusercontent.com/letisalba/Data-606/main/Project/drinks.csv", header = TRUE, na.strings = c(""," ", "NA"));
+```
+
+$~$
+
+## Exploratory Data Analysis
+
+$~$
+
+```{r}
+glimpse(drinks)
+```
+
+$~$
+
+```{r}
+# Get column names
+names(drinks)
+
+# Rename columns
+colnames(drinks) <- c("Country", "Beer_Servings", "Spirit_Servings", "Wine_Servings", "Total_Litres_Pure_Alcohol")
+head(drinks, n = 5)
+```
+
+$~$
+
+```{r}
+# commenting out so that it doesn't replicate in my system
+
+#write.csv(drinks, "/Users/letiix3/Desktop/Data-606/Project/csv file/drinks2.csv")
+```
+
+$~$
+
+```{r}
+summary(drinks)
+```
+
+$~$
+
+```{r}
+
 ```
 
 
-### Part 1 - Introduction
+## Inference
 
+$~$
 
-### Part 2 - Data
+**Ho:** countries on the Eastern hemisphere will have less `Total_Litres_Pure_Alcohol` than those in the Western, Northern and Southern hemispheres.
 
+**Ha:** countries on the Eastern hemisphere will not have less `Total_Litres_Pure_Alcohol` than those in the Western, Northern and Southern hemispheres.
 
-### Part 3 - Exploratory data analysis
+$~$
 
+### The Normal Probability Plot
 
-### Part 4 - Inference
+```{r}
+# Total_Litres_Pure_Alcohol
+qqnorm(drinks$Total_Litres_Pure_Alcohol)
+qqline(drinks$Total_Litres_Pure_Alcohol)
+```
 
+$~$
 
-### Part 5 - Conclusion
+```{r}
+# Beer_Servings
+qqnorm(drinks$Beer_Servings)
+qqline(drinks$Beer_Servings)
+```
 
+$~$
 
-### References
+```{r}
+# Spirit_Servings
+qqnorm(drinks$Spirit_Servings)
+qqline(drinks$Spirit_Servings)
+```
 
+$~$
 
-### Appendix (optional)
+```{r}
+# Wine_Servings
+qqnorm(drinks$Wine_Servings)
+qqline(drinks$Wine_Servings)
+```
 
-Remove this section if you don't have an appendix
+$~$
+
+### Linear Regression Model
+```{r}
+# lm for Beer against total litres of pure alcohol
+beer_model <- lm(Total_Litres_Pure_Alcohol~ Beer_Servings, data = drinks)
+summary(beer_model)
+```
+
+$~$
+
+```{r}
+anova(beer_model)
+```
+
+$~$
+
+```{r}
+# lm for Wine against total litres of pure alcohol
+wine_model <- lm(Total_Litres_Pure_Alcohol~ Wine_Servings, data = drinks)
+summary(wine_model)
+```
+
+$~$
+
+```{r}
+anova(wine_model)
+```
+
+$~$
+
+```{r}
+# lm for Spirit against total litres of pure alcohol
+spirit_model <- lm(Total_Litres_Pure_Alcohol~ Spirit_Servings, data = drinks)
+summary(spirit_model)
+```
+
+$~$
+
+```{r}
+anova(spirit_model)
+```
+
+$~$
+
+## Plots
+
+$~$
+
+```{r}
+# Beer servings by Country; top 40
+drinks %>% 
+  arrange(desc(Beer_Servings)) %>% 
+  head(40) %>% 
+  ggplot(aes(y = reorder(Country, Beer_Servings),
+             x = Beer_Servings,
+                  fill= Country))+
+  geom_col()+
+  xlab("Beer Servings") +
+  ylab("Country") +
+  theme(legend.position = "none")
+```
+
+$~$
+
+```{r}
+# Spirits serving by Country; top 40
+drinks %>% 
+  arrange(desc(Spirit_Servings)) %>% 
+  head(40) %>% 
+  ggplot(aes(y = reorder(Country, Spirit_Servings),
+             x = Spirit_Servings,
+                  fill= Country))+
+  geom_col()+
+  xlab("Spirit Servings") +
+  ylab("Country") +
+  theme(legend.position = "none")
+```
+
+$~$
+
+```{r}
+# Wine servings by Country; top 40
+drinks %>% 
+  arrange(desc(Wine_Servings)) %>% 
+  head(40) %>% 
+  ggplot(aes(y = reorder(Country, Wine_Servings),
+             x = Wine_Servings,
+                  fill= Country))+
+  geom_col()+
+  xlab("Wine Servings") +
+  ylab("Country") +
+  theme(legend.position = "none")
+```
+
+$~$
+
+```{r}
+# Total alcohol in litres by Country; top 40
+drinks %>% 
+  arrange(desc(Total_Litres_Pure_Alcohol)) %>% 
+  head(40) %>% 
+  ggplot(aes(y = reorder(Country, Total_Litres_Pure_Alcohol),
+             x = Total_Litres_Pure_Alcohol,
+                  fill= Country))+
+  geom_col() +
+  xlab("Total Litres of Pure Alcohol") +
+  ylab("Country") +
+  theme(legend.position = "none")
+```
+
+$~$
+
+```{r}
+drinks %>% 
+ggplot(aes(x = Beer_Servings)) +
+  geom_histogram()
+```
+
+$~$
+
+```{r}
+summary(drinks$Spirit_Servings)
+```
+
+$~$
+
+```{r}
+drinks %>% 
+ggplot(aes(x = Spirit_Servings)) +
+  geom_histogram()
+```
+
+$~$
+
+```{r}
+summary(drinks$Wine_Servings)
+```
+
+$~$
+
+```{r}
+drinks %>% 
+ggplot(aes(x = Wine_Servings)) +
+  geom_histogram()
+```
+
+$~$
+
+```{r}
+summary(drinks$Total_Litres_Pure_Alcohol)
+```
+
+$~$
+
+```{r}
+drinks %>% 
+ggplot(aes(x = Total_Litres_Pure_Alcohol)) +
+  geom_histogram()
+```
+
+$~$
+
+```{r}
+
+```
+
+$~$
+
+## Conclusion
+
+$~$
+
+## References
+
+$~$
+
+World Health Organization. (n.d.). Global information system on alcohol and health. World Health Organization. Retrieved October 19, 2021, from https://www.who.int/data/gho/data/themes/global-information-system-on-alcohol-and-health. 
+
+$~$
+
+Ritchie, H., &amp; Roser, M. (2018, April 16). Alcohol consumption. Our World in Data. Retrieved November 15, 2021, from https://ourworldindata.org/alcohol-consumption. 
+
+$~$
+
+WHO. (2016). 19089 United States of america - world health organization. Retrieved December 5, 2021, from https://www.who.int/substance_abuse/publications/global_alcohol_report/profiles/usa.pdf.

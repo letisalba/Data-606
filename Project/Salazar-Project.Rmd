@@ -1,0 +1,582 @@
+---
+title: DATA 606 Final Project
+author: Leticia Salazar
+date: 12/09/2021
+output:
+  pdf_document:
+    toc: yes
+  html_document:
+    theme: flatly
+    heightlight: breezedark
+    toc: yes
+    toc_float: yes
+---
+$~$
+
+## Abstract
+
+Historically social drinking or moderate alcohol consumption holds an important role in social engagement for many. According to WHO, World Health Organization, the recorded alcohol consumption per capita (years 15+) in the United States is 47% beer, 35% spirits and 18% wine. The purpose of this project is to get more insight on how alcohol consumption varies between the countries presented in the data set below. Being that alcohol is consumed worldwide, there is no statistical evidence that there is a preferred type of alcohol countries are more inclined in drinking. I will be performing a Linear Regression model in hopes to find a correlation between the alcohol types: beer, spirits, and wine along with total liters of pure alcohol and be able to target what is the most popular alcohol type.
+
+$~$
+
+## Introduction
+
+Data was collected from [FiveThirtyEight's](https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/) article called "Dear Mona Followup: Where Do People Drink The Most Beer, Wine And Spirits?" This data was collected by World Health Organization, Global Information System on Alcohol and Health (GISAH), 2010. Each of the 193 total observations in this case represents a country around the world along with their beer, spirits and/or wine number of servings, as well as the total liters of pure alcohol.
+
+$~$
+
+#### Research Question
+
+In general, is there a significant difference in the preferred type of alcohol?
+$~$
+
+#### Type of study 
+
+This is an observational study.
+$~$
+
+#### Dependent Variable
+
+The dependent variable is alcohol consumption and it is quantitative.
+$~$
+
+#### Independent Variable
+
+The independent variables are country and types of alcohol and they are qualitative.
+
+$~$
+
+## Data
+
+$~$
+
+```{r, warning = FALSE, message = FALSE}
+# load libraries
+library("DATA606")
+library("tidyverse")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+library("infer")
+library("openintro")
+library("GGally")
+```
+
+$~$
+
+#### Load Data
+```{r}
+# load data
+drinks <- read.csv("https://raw.githubusercontent.com/letisalba/Data-606/main/Project/drinks.csv", header = TRUE, na.strings = c(""," ", "NA"));
+```
+
+$~$
+
+## Exploratory Data Analysis
+
+$~$
+
+```{r}
+glimpse(drinks)
+```
+
+$~$
+
+```{r}
+# Check for any missing values
+sum(is.na(drinks))
+```
+
+$~$
+
+```{r}
+summary(drinks)
+```
+
+$~$
+
+#### Data Wrangling
+```{r}
+# Get column names
+names(drinks)
+
+# Rename columns
+colnames(drinks) <- c("Country", "Beer_Servings", "Spirit_Servings", "Wine_Servings", "Total_Litres_Pure_Alcohol")
+head(drinks, n = 5)
+```
+
+$~$
+
+#### Write .CSV
+```{r}
+# commenting out so that it doesn't replicate in my system
+
+#write.csv(drinks, "/Users/letiix3/Desktop/Data-606/Project/csv file/drinks2.csv")
+```
+
+$~$
+
+## Inference
+
+$~$
+
+### Hypthesis Testing:
+$~$
+
+**$H_{0}$:** There is no preference between alcohol types consumed per country.
+
+**$H_{A}$:** There is a preference between alcohol types consumed per country.
+
+$~$
+
+#### Number of countries with less than 1 and 0 `Total_Litres_Pure_Alcohol`
+
+_Out of 40 countries with less than 1 `Total_Litres_Pure_Alcohol` there are 13 counties that have 0 `Total_Litres_Pure_Alcohol`. This leaves 153 countries with an alcohol consumption greater than 1._
+```{r}
+# Countries with less than 1 liter in  alcohol consumption
+low_alcohol <- subset(drinks, Total_Litres_Pure_Alcohol < 1)
+head(low_alcohol, n = 10)
+
+# Countries with No alcohol consumption 
+no_alcohol <- subset(drinks, Total_Litres_Pure_Alcohol == 0)
+no_alcohol
+```
+
+$~$
+
+### Find Mean, Median, Standard Deviation, IQR, Standard Error, Margin of Error for `Beer_Servings`
+```{r}
+# Mean
+mean_beer <- mean(drinks$Beer_Servings)
+  print (paste0("Mean for `Beer_Servings` = ", mean_beer))
+
+# Median
+median_beer <- median(drinks$Beer_Servings)
+ print (paste0("Median for `Beer_Servings` = ", median_beer))
+ 
+# Standard Deviation
+sd_beer <- sd(drinks$Beer_Servings)
+ print (paste0("Standard Deviation for `Beer_Servings` = ", sd_beer))
+
+# IQR 
+iqr_beer <- IQR(drinks$Beer_Servings, na.rm = TRUE)
+ print (paste0("IQR for `Beer_Servings` = ", iqr_beer))
+ 
+# Standard Error
+se_beer <- sd_beer / sqrt(nrow(drinks))
+ print (paste0("Standard Error for `Beer_Servings` = ", se_beer))
+
+# Margin of Error
+z <- 1.96
+
+me_beer <- z * se_beer
+ print (paste0("Margin of Error for `Beer_Servings` = ", me_beer))
+```
+
+$~$
+
+The probability that a randomly chosen country has a `Beer_Servings` more than 100 is 52.43%
+```{r}
+#Probability that a randomly chosen country has a total liters of pure alcohol more than 10
+mean_beer <- 106.1606
+sd_beer <- 101.1431
+
+P_100_beer <- 1 - pnorm(100, mean_beer, sd_beer)
+ print (paste0("The probability that a randomly chosen country has `Beer_Servings` more than 10 is = ", P_100_beer))
+```
+
+$~$
+
+### Find Mean, Median, Standard Deviation, IQR, Standard Error, Margin of Error for `Spirit_Servings`
+```{r}
+# Mean
+mean_spirit <- mean(drinks$Spirit_Servings)
+ print (paste0("Mean for `Spirit_Servings` = ", mean_spirit))
+
+# Median
+median_spirit <- median(drinks$Spirit_Servings)
+ print (paste0("Median for `Spirit_Servings` = ", median_spirit))
+ 
+# Standard Deviation
+sd_spirit <- sd(drinks$Spirit_Servings)
+ print (paste0("Standard Deviation for `Spirit_Servings` = ", sd_spirit))
+
+# IQR 
+iqr_spirit <- IQR(drinks$Spirit_Servings, na.rm = TRUE)
+ print (paste0("IQR for `Spirit_Servings` = ", iqr_spirit))
+ 
+# Standard Error
+se_spirit <- sd_spirit / sqrt(nrow(drinks))
+ print (paste0("Standard Error for `Spirit_Servings` = ", se_spirit))
+ 
+# Margin of Error
+z <- 1.96
+
+me_spirit <- z * se_spirit
+ print (paste0("Margin of Error for `Spirit_Servings` = ", me_spirit))
+```
+
+$~$
+
+The probability that a randomly chosen country has a `Spirit_Servings` more than 100 is 41.5%
+```{r}
+#Probability that a randomly chosen country has a `Spirit_Servings` more than 10
+mean_spirit<- 80.99482
+sd_spirit <- 88.28431
+
+P_10_spirit <- 1 - pnorm(100, mean_spirit, sd_spirit)
+ print (paste0("The probability that a randomly chosen country has a `Spirit_Servings` more than 100 is = ", P_10_spirit))
+```
+
+$~$
+
+### Find Mean, Median, Standard Deviation, IQR, Standard Error, Margin of Error for `Wine_Servings`
+```{r}
+# Mean
+mean_wine <- mean(drinks$Wine_Servings)
+ print (paste0("Mean for `Wine_Servings` = ", mean_wine))
+
+# Median
+median_wine <- median(drinks$Wine_Servings)
+ print (paste0("Median for `Wine_Servings` = ", median_wine))
+ 
+# Standard Deviation
+sd_wine <- sd(drinks$Wine_Servings)
+ print (paste0("Standard Deviation for `Wine_Servings` = ", sd_wine))
+
+# IQR 
+iqr_wine <- IQR(drinks$Wine_Servings, na.rm = TRUE)
+ print (paste0("IQR for `Wine_Servings` = ", iqr_wine))
+ 
+# Standard Error
+se_wine <- sd_wine / sqrt(nrow(drinks))
+ print (paste0("Standard Error for `Wine_Servings` = ", se_wine))
+ 
+# Margin of Error
+z <- 1.96
+
+me_wine <- z * se_wine
+  print (paste0("Margin of Error for `Wine_Servings` = ", me_wine))
+```
+
+$~$
+
+The probability that a randomly chosen country has a `Wine_Servings` more than 100 is 26.3%
+```{r}
+#Probability that a randomly chosen country has a `Wine_Servings` more than 10
+mean_wine <- 49.45078
+sd_wine <- 79.6976
+
+P_100_wine <- 1 - pnorm(100, mean_wine, sd_wine)
+ print (paste0("The probability that a randomly chosen country has a `Wine_Servings` more than 100 = ", P_100_wine))
+```
+
+$~$
+
+### Find Mean, Median, Standard Deviation, IQR, Standard Error, Margin of Error for `Total_Litres_Pure_Alcohol`
+```{r}
+# Mean
+mean_tlpa <- mean(drinks$Total_Litres_Pure_Alcohol)
+ print (paste0("Mean for `Total_Litres_Pure_Alcohol` = ", mean_tlpa))
+
+# Median
+median_tlpa <- median(drinks$Total_Litres_Pure_Alcohol)
+ print (paste0("Median for `Total_Litres_Pure_Alcohol` = ", median_tlpa))
+ 
+# Standard Deviation
+sd_tlpa <- sd(drinks$Total_Litres_Pure_Alcohol)
+ print (paste0("Standard Deviation for `Total_Litres_Pure_Alcohol` = ", sd_tlpa))
+
+# IQR 
+iqr_tlpa <- IQR(drinks$Total_Litres_Pure_Alcohol, na.rm = TRUE)
+ print (paste0("IQR for `Total_Litres_Pure_Alcohol` = ", iqr_tlpa))
+ 
+# Standard Error
+se_tlpa <- sd_tlpa / sqrt(nrow(drinks))
+ print (paste0("Standard Error for `Total_Litres_Pure_Alcohol` = ", se_tlpa))
+ 
+# Margin of Error
+z <- 1.96
+
+me_tlpa <- z * se_tlpa
+ print (paste0("Margin of Error for `Total_Litres_Pure_Alcohol` = ", me_tlpa))
+```
+
+$~$
+
+The probability that a randomly chosen country has a `Total_Litres_Pure_Alcohol` more than 10 is 8.07%
+```{r}
+#Probability that a randomly chosen country has a total litres of pure alcohol more than 10
+mean_tlpa <- 4.717098
+sd_tlpa <- 3.773298
+
+P_10_tlpa <- 1 - pnorm(10, mean_tlpa, sd_tlpa)
+ print (paste0("The probability that a randomly chosen country has a `Total_Litres_Pure_Alcohol` more than 100  = ", P_10_tlpa))
+```
+
+$~$
+
+### Linear Regression Model
+
+Linear models can be used for prediction or to evaluate whether there is a linear relationship between two numerical variables. 
+
+By using the Linear Regression model I will be able to evaluate whether or not there is a linear relationship for the alcohol types, `Beer_Servings`, `Spirit_Servings`, `Wine_Servings` and `Total_Litres_Pure_Alcohol`.
+
+$~$
+
+#### `Beer_Servings`
+
+$~$
+
+\[
+  \hat{y} = 0.4758 + 22.4046 \times Total\_Litres\_Pure\_Alcohol
+\]
+
+The adjusted $R^{2}$ is 69.75% and the P-Value is < 2.2e-16, which is smaller than the typical threshold of 0.05.
+```{r}
+# lm for `Beer_Servings` against `Total_Litres_Pure_Alcohol`
+beer_model <- lm(Beer_Servings~ Total_Litres_Pure_Alcohol, data = drinks)
+summary(beer_model)
+```
+
+$~$
+
+```{r}
+# Residual v. Fitted, Normal Probability, Scale-Location, and Residuals v. Leverage
+plot(beer_model)
+```
+
+$~$
+
+#### `Spirit_Servings`
+
+$~$
+
+\[
+  \hat{y} = 8.708 + 15.324 \times Total\_Litres\_Pure\_Alcohol
+\]
+
+The adjusted $R^{2}$ is 42.6% and the P-Value is < 2.2e-16, which is smaller than the typical threshold of 0.05.
+```{r}
+# lm for `Spirit_Servings` against `Total_Litres_Pure_Alcohol`
+spirit_model <- lm(Spirit_Servings~Total_Litres_Pure_Alcohol, data = drinks)
+summary(spirit_model)
+```
+
+$~$
+
+```{r}
+# Residual v. Fitted, Normal Probability, Scale-Location, and Residuals v. Leverage
+plot(spirit_model)
+```
+
+$~$
+
+#### `Wine_Servings`
+
+$~$
+
+\[
+  \hat{y} =  -17.063 + 14.101 \times Total\_Litres\_Pure\_Alcohol
+\]
+
+The adjusted $R^{2}$ is 44.3% and the P-Value is < 2.2e-16, which is smaller than the typical threshold of 0.05.
+```{r}
+# lm for `Wine_Servings` against `Total_Litres_Pure_Alcohol`
+wine_model <- lm(Wine_Servings~Total_Litres_Pure_Alcohol, data = drinks)
+summary(wine_model)
+```
+
+$~$
+
+```{r}
+# Residual v. Fitted, Normal Probability, Scale-Location, and Residuals v. Leverage
+plot(wine_model)
+```
+
+$~$
+
+```{r}
+# Multiple plots from data set
+par(mfrow = c(2, 2)) # creates a 2 x 2 plotting matrix
+plot(drinks)
+```
+
+$~$
+
+## Plots
+
+$~$
+
+### [Tableau Public Visualization](https://public.tableau.com/app/profile/leticia.salazar3386/viz/Data606FinalProject/MapBeerServing)
+
+![](/Users/letiix3/Desktop/Data-606/Project/Pictures/Map in Litres of Alcohol.png)
+
+$~$
+
+### GGPPLOT
+
+```{r}
+# Beer servings by Country; top 10
+drinks %>% 
+  arrange(desc(Beer_Servings)) %>% 
+  head(10) %>% 
+  ggplot(aes(y = reorder(Country, Beer_Servings),
+             x = Beer_Servings,
+                  fill= Country))+
+  geom_col()+
+  xlab("Beer Servings") +
+  ylab("Country") +
+  theme(legend.position = "none")
+```
+
+$~$
+
+```{r}
+# Spirits serving by Country; top 10
+drinks %>% 
+  arrange(desc(Spirit_Servings)) %>% 
+  head(10) %>% 
+  ggplot(aes(y = reorder(Country, Spirit_Servings),
+             x = Spirit_Servings,
+                  fill= Country))+
+  geom_col()+
+  xlab("Spirit Servings") +
+  ylab("Country") +
+  theme(legend.position = "none")
+```
+
+$~$
+
+```{r}
+# Wine servings by Country; top 10
+drinks %>% 
+  arrange(desc(Wine_Servings)) %>% 
+  head(10) %>% 
+  ggplot(aes(y = reorder(Country, Wine_Servings),
+             x = Wine_Servings,
+                  fill= Country))+
+  geom_col()+
+  xlab("Wine Servings") +
+  ylab("Country") +
+  theme(legend.position = "none")
+```
+
+$~$
+
+```{r}
+# Total alcohol in litres by Country; top 10
+drinks %>% 
+  arrange(desc(Total_Litres_Pure_Alcohol)) %>% 
+  head(10) %>% 
+  ggplot(aes(y = reorder(Country, Total_Litres_Pure_Alcohol),
+             x = Total_Litres_Pure_Alcohol,
+                  fill= Country))+
+  geom_col() +
+  xlab("Total Litres of Pure Alcohol") +
+  ylab("Country") +
+  theme(legend.position = "none")
+```
+
+$~$
+
+```{r}
+# Histogram for Beer_Servings
+drinks %>% 
+ggplot(aes(x = Beer_Servings)) +
+  geom_histogram()
+```
+
+$~$
+
+```{r}
+# Histogram for Spirit_Servings
+drinks %>% 
+ggplot(aes(x = Spirit_Servings)) +
+  geom_histogram()
+```
+
+$~$
+
+```{r}
+# Histogram for Wine_Servings
+drinks %>% 
+ggplot(aes(x = Wine_Servings)) +
+  geom_histogram()
+```
+
+$~$
+
+```{r}
+# Histogram for Total_Litres_Pure_Alcohol
+drinks %>% 
+ggplot(aes(x = Total_Litres_Pure_Alcohol)) +
+  geom_histogram()
+```
+
+$~$
+
+The outliers are more visible within the boxplots and you see how the mean changes per alcohol type.
+```{r}
+# Boxplots side by side alcohol types and total litres of pure alcohol
+boxplot(drinks$Beer_Servings, drinks$Spirit_Servings, drinks$Wine_Servings, drinks$Total_Litres_Pure_Alcohol,
+        names = c("Beer", "Spirit", "Wine", "Total_Litres"))
+```
+
+$~$
+
+```{r}
+# Beer Servings
+g1 <- drinks %>%
+  select(contains("Beer_Servings")) %>%
+  ggpairs()
+g1
+
+# Spirit Servings
+g2 <- drinks %>%
+  select(contains("Spirit_Servings")) %>%
+  ggpairs()
+g2
+
+# Wine Servings
+g3 <- drinks %>%
+  select(contains("Wine_Servings")) %>%
+  ggpairs()
+g3
+
+# Total Litres Pure Alcohol
+g4 <- drinks %>%
+  select(contains("Total_Litres_Pure_Alcohol")) %>%
+  ggpairs()
+g4
+```
+
+$~$
+
+## Conclusion
+
+$~$
+
+**$H_{0}$:** There is no preference between alcohol types consumed per country.
+
+**$H_{A}$:** There is a preference between alcohol types consumed per country.
+
+$~$
+
+After exploring this data we can safely reject the $H_{0}$. There is a preference between alcohol types consumed per country. The probability that a randomly chosen country has more than 100 servings of Beer is 52.43%, Spirit is 41.5% and Wine is 26.3% therefore, most countries in this data prefer Beer and Spirit over Wine. Yet, there are 13 countries that do no have alcohol consumption recorded due to strict alcohol consumption laws or religious believes. Some of these countries include Afghanistan, Bangladesh, North Korea, Iran and Kuwait, among others. The linear regression model showed us that there's a correlation between `Beer_Servings`, `Spirit_Servings`, and `Wine_Servings` with `Total_Litres_Pure_Alcohol`. I did notice that within each model the p-value was close to 0 and below the threshold of 0.05 and an indicator to reject the null hypothesis.
+
+$~$
+
+## References
+
+$~$
+
+World Health Organization. (n.d.). Global information system on alcohol and health. World Health Organization. Retrieved October 19, 2021, from https://www.who.int/data/gho/data/themes/global-information-system-on-alcohol-and-health. 
+
+$~$
+
+Ritchie, H., &amp; Roser, M. (2018, April 16). Alcohol consumption. Our World in Data. Retrieved November 15, 2021, from https://ourworldindata.org/alcohol-consumption. 
+
+$~$
+
+WHO. (2016). 19089 United States of america - world health organization. Retrieved December 5, 2021, from https://www.who.int/substance_abuse/publications/global_alcohol_report/profiles/usa.pdf.

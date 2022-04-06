@@ -46,7 +46,7 @@ You will be analyzing the same dataset as in the previous lab, where you delved 
 **_Within each category:_**
 * 4,792 reported 0 days 
 * 925 reported 1 - 2 days
-* 493 reported 3-5 days
+* 493 reported 3 - 5 days
 * 311 reported 6 - 9 days
 * 373 reported 10 - 19 days
 * 298 reported 20 - 29 days

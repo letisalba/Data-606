@@ -46,7 +46,7 @@ $~$
 
 **You should phrase your research question in a way that matches up with the scope of inference your data set allows for.**
 
-_Is there a significant difference in the preferred type of alcohol?_
+_In general, is there a significant difference in the preferred type of alcohol?_
 
 $~$
 
@@ -78,7 +78,7 @@ $~$
 
 **If you collected the data, state self-collected. If not, provide a citation/link.**
 
-_World Health Organization. (n.d.). Global information system on alcohol and health. World Health Organization. Retrieved October 19, 2021, from https://www.who.int/data/gho/data/themes/global-information-system-on-alcohol-and-health. _
+_World Health Organization. (n.d.). Global information system on alcohol and health. World Health Organization. Retrieved October 19, 2021, from https://www.who.int/data/gho/data/themes/global-information-system-on-alcohol-and-health._
 
 $~$
 
