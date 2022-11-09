@@ -1,12 +1,9 @@
 ---
 title: 'Inference for numerical data'
-author: ""
+author: "Leticia Salazar"
 output:
   pdf_document: default
   html_document:
-    includes:
-      in_header: header.html
-    css: ./lab.css
     highlight: pygments
     theme: cerulean
     toc: true

@@ -1,10 +1,15 @@
 ---
 title: "Data 606 Chapter 1 Homework"
 author: "Leticia Salazar"
-date: "`r Sys.Date()`"
+date: "September 4, 2021"
 output:
-  pdf_document: default
-  html_document: default
+  html_document:
+    theme: cosmo
+    highlight: kate
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -15,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##### __Smoking habits of UK residents.__ (1.10, p.20) A survey was conducted to study the smoking habits of UK residents. Below is the data matrix displaying a portion of the data collected in this survey. Note that "£" stands for British Pounds Sterling, "cig" stands for cigarrettes, and "N/A" refers to a missing component of the data.
 
-![](/Users/letiix3/Desktop/Data 606/Homework/Pictures/1.10_table.png)
+![](/Users/letiix3/Documents/Data Sciene MS Program/Data-606/Homework/Hwk1/Pictures/1.10_table.png)
 
 ##### __(a) What does each row of the data matrix represent?__
 ##### _Each row of the data matrix represents the results of the residents smoking habits_

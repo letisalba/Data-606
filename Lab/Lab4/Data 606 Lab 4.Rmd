@@ -1,17 +1,14 @@
 ---
 title: "The normal distribution"
 author: "Leticia Salazar"
-date: "`r Sys.Date()`"
+date: "September 25, 2021"
 output:
-  pdf_document: default
   html_document:
-    includes:
-      in_header: header.html
-    css: ./lab.css
     highlight: pygments
     theme: cerulean
     toc: true
     toc_float: true
+  pdf_document: default
 editor_options: 
   chunk_output_type: console
 ---

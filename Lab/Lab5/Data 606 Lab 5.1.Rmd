@@ -1,17 +1,13 @@
 ---
 title: "Foundations for statistical inference - Sampling distributions"
 author: "Leticia Salazar"
-Date: "`r Sys.Date()`"
 output:
-  pdf_document: default
   html_document:
-    includes:
-      in_header: header.html
-    css: ./lab.css
     highlight: pygments
     theme: cerulean
     toc: true
     toc_float: true
+  pdf_document: default
 editor_options: 
   chunk_output_type: console
 ---

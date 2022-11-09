@@ -1,9 +1,15 @@
 ---
 title: "Chapter 7 - Inference for Numerical Data"
-author: ""
+author: "Leticia Salazar"
 output:
-    pdf_document:
-        extra_dependencies: ["geometry", "multicol", "multirow", "xcolor"]
+  html_document:
+    df_print: paged
+  pdf_document:
+    extra_dependencies:
+    - geometry
+    - multicol
+    - multirow
+    - xcolor
 ---
 
 ```{r setup, include=FALSE}

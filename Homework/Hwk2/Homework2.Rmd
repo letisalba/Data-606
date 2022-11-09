@@ -1,11 +1,16 @@
 ---
 title: "Chapter 2 - Summarizing Data"
 author: "Leticia Salazar"
-date: "`r Sys.Date()`"
+date: "September 8, 2021"
 output:
-    pdf_document:
-        extra_dependencies: ["geometry", "multicol", "multirow"]
-editor_options: 
+  html_document:
+    df_print: paged
+  pdf_document:
+    extra_dependencies:
+    - geometry
+    - multicol
+    - multirow
+editor_options:
   chunk_output_type: console
 ---
 
